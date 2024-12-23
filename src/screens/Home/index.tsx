@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Text, TextInput, Alert, TouchableOpacity, View, FlatList } from 'react-native';
 import { styles } from './styles';
 
@@ -5,22 +6,18 @@ import { Participant } from '../../components/Participant';
 
 export default function Home() {
 
-    const participants = [
-        "Vitor",
-        "Alecio",
-        "Felipe",
-        "Vitória",
-        "Raphael"
-    ]
+    const [participants, setParticipants] = useState(['João']);
 
-    const handleAddParticipant = () => {
+    function handleParticipantAdd() {
         if(participants.includes('Vitor')) {
             return Alert.alert('Erro', 'Participante já cadastrado!');
         }
-        console.log('Você clicou em adicionar um participante!');
-    }
+        
+        setParticipants(prevState => [...participants, 'Ana']);
+        console.log(participants);
+    };
 
-    function handleRemoveParticipant(name : string) {
+    function handleParticipantRemove(name : string) {   
         Alert.alert('Remover participante', `Deseja remover o participante ${name}?`, [
             {
                 text: 'Cancelar',
@@ -44,7 +41,7 @@ export default function Home() {
                 placeholder='Nome do participante'
                 placeholderTextColor={'gray'}
                 keyboardType='default'/>
-            <TouchableOpacity style={styles.button} onPress={handleAddParticipant}/>
+            <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}/>
                 <Text style={styles.buttonText}>+</Text>
             <TouchableOpacity/>
         </View>
@@ -53,7 +50,7 @@ export default function Home() {
             data={participants}
             keyExtractor={item => item}
             renderItem={({item}) => (
-                <Participant name={item} onRemove={() => handleRemoveParticipant(item)}/>
+                <Participant name={item} onRemove={() => handleParticipantRemove(item)}/>
             )}
             showsVerticalScrollIndicator={false}
             ListEmptyComponent={
